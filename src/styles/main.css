@@ -1,0 +1,797 @@
+/* ============================================================
+   main.css – Liquid Glass Design System
+   Performance-optimised: backdrop-filter on navbar ONLY.
+   Cards use layered box-shadow + semi-opaque backgrounds —
+   visually identical to frosted glass, zero blur cost.
+   Bootstrap 5 is the primary layout framework.
+   ============================================================ */
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  --color-navy:       #1a2a4a;
+  --color-navy-light: #223560;
+  --color-navy-deep:  #0f1e38;
+  --color-gold:       #c9a84c;
+  --color-gold-light: #d4b76a;
+  --color-white:      #ffffff;
+  --color-text:       #1e2d4a;
+  --color-text-muted: #5a6a85;
+  --color-border:     rgba(26, 42, 74, 0.1);
+
+  --font-heading: 'Georgia', serif;
+  --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Card glass tokens – layered shadows, no backdrop-filter */
+  --card-shadow:
+    0 2px 4px rgba(26,42,74,0.04),
+    0 6px 20px rgba(26,42,74,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  --card-shadow-hover:
+    0 4px 8px rgba(26,42,74,0.06),
+    0 16px 40px rgba(26,42,74,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+
+  --radius:    0.75rem;
+  --radius-lg: 1.25rem;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: #eff1f8;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+a { color: var(--color-navy); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--color-gold); }
+
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   NAVBAR — THE ONLY ELEMENT THAT USES backdrop-filter.
+   It is a single fixed element; the blur cost is negligible
+   and the visual payoff (frosted bar over the hero) is high.
+   ============================================================ */
+.navbar-brand-text {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold) !important;
+  letter-spacing: 2px;
+}
+
+.navbar-dark-custom {
+  background: rgba(15, 28, 56, 0.72) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: 0 2px 32px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-dark-custom .nav-link {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 0.8rem !important;
+  border-radius: var(--radius);
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.navbar-dark-custom .nav-link:hover,
+.navbar-dark-custom .nav-link.router-link-active {
+  color: var(--color-gold) !important;
+  background: rgba(201, 168, 76, 0.1);
+}
+
+.navbar-dark-custom .navbar-toggler {
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.navbar-dark-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28201%2C168%2C76%2C0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Skip nav */
+.skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 9999;
+  background: var(--color-gold);
+  color: var(--color-navy);
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 var(--radius) 0;
+  font-weight: 700;
+  transition: top 0.15s;
+}
+.skip-nav:focus { top: 0; }
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 70% at 80% 30%, rgba(201, 168, 76, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 10% 80%, rgba(34, 53, 96, 0.5) 0%, transparent 55%),
+    linear-gradient(145deg, #0f1e38 0%, #1a2a4a 40%, #223560 100%);
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  padding: 100px 0 70px;
+}
+
+/* Orbs use transform-only animation → compositor thread, zero scroll cost */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  animation: orb-float 8s ease-in-out infinite;
+}
+
+.hero-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
+  top: -180px;
+  right: -140px;
+  filter: blur(50px);
+}
+
+.hero-orb-2 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+  bottom: -80px;
+  left: 5%;
+  filter: blur(40px);
+  animation-delay: -3s;
+}
+
+.hero-orb-3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, transparent 70%);
+  top: 35%;
+  left: 38%;
+  filter: blur(30px);
+  animation-delay: -5s;
+}
+
+/* Only translateY + scale — runs entirely on the GPU compositor */
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-24px) scale(1.04); }
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-white);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  color: var(--color-gold);
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+
+.hero-summary {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  max-width: 540px;
+  line-height: 1.75;
+}
+
+.hero-photo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Static pseudo-element – no filter, no animation, no layout cost */
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: calc(var(--radius-lg) + 10px);
+  background: rgba(201, 168, 76, 0.07);
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 24px 64px rgba(0,0,0,0.22);
+  pointer-events: none;
+}
+
+.hero-photo {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 2px solid rgba(201, 168, 76, 0.5);
+  box-shadow:
+    0 0 0 6px rgba(201, 168, 76, 0.1),
+    0 32px 80px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   PAGE HEADER (inner pages)
+   ============================================================ */
+.page-header {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 50%, rgba(201, 168, 76, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 5% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
+    linear-gradient(145deg, #0f1e38 0%, #1a2a4a 50%, #223560 100%);
+  padding: 100px 0 56px;
+  color: var(--color-white);
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -60px;
+  width: 360px; height: 360px;
+  background: rgba(201, 168, 76, 0.12);
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 8%;
+  width: 220px; height: 220px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.page-header h1 {
+  color: var(--color-white);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+  position: relative; z-index: 1;
+}
+
+.page-header .lead {
+  color: rgba(255,255,255,0.75);
+  position: relative; z-index: 1;
+}
+
+.page-header-accent {
+  display: inline-block;
+  width: 50px; height: 3px;
+  background: linear-gradient(90deg, var(--color-gold), rgba(201, 168, 76, 0.35));
+  border-radius: 2px;
+  margin-top: 0.75rem;
+  position: relative; z-index: 1;
+}
+
+/* ============================================================
+   SECTION BACKGROUNDS — rich gradients give cards their
+   frosted context without needing blur on each element.
+   ============================================================ */
+.section-padding { padding: 80px 0; }
+
+.section-padding:not(.section-alt) {
+  background:
+    radial-gradient(ellipse 55% 60% at 8% 70%,  rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 55% at 92% 15%, rgba(26,42,74,0.05)  0%, transparent 60%),
+    linear-gradient(160deg, #f6f8ff 0%, #ffffff 45%, #f8f5ee 100%);
+}
+
+.section-alt {
+  background:
+    radial-gradient(ellipse 55% 65% at 20% 30%, rgba(201,168,76,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 55% at 82% 78%, rgba(26,42,74,0.07)  0%, transparent 60%),
+    linear-gradient(160deg, #edf0fa 0%, #f3f5ff 50%, #ede9dc 100%) !important;
+}
+
+/* ============================================================
+   SECTION TITLE
+   ============================================================ */
+.section-title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  color: var(--color-navy);
+  margin-bottom: 0.5rem;
+}
+
+.section-title-accent {
+  display: inline-block;
+  width: 42px; height: 3px;
+  background: linear-gradient(90deg, var(--color-gold), rgba(201,168,76,0.3));
+  border-radius: 2px;
+  margin-bottom: 1.25rem;
+}
+
+.section-subtitle {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   CARDS — frosted glass look via layered shadows + semi-opaque
+   gradient background. No backdrop-filter needed.
+   ============================================================ */
+.card-custom {
+  background: linear-gradient(145deg,
+    rgba(255,255,255,0.92) 0%,
+    rgba(241,245,255,0.82) 100%);
+  border: 1px solid rgba(255,255,255,0.85);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  /* Only GPU-composited properties */
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.28s ease;
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Shimmer — uses transform (GPU) instead of left (layout trigger) */
+.card-custom::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60%; height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255,255,255,0.38) 50%,
+    transparent 70%
+  );
+  transform: translateX(-160%);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+
+.card-custom:hover::before { transform: translateX(270%); }
+
+.card-custom:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-body { position: relative; z-index: 1; }
+
+/* ============================================================
+   CARD ICON
+   ============================================================ */
+.card-icon {
+  width: 52px; height: 52px;
+  border-radius: var(--radius);
+  background: rgba(26, 42, 74, 0.07);
+  border: 1px solid rgba(26, 42, 74, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(26,42,74,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--color-navy);
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.card-icon-gold {
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  color: var(--color-gold);
+  box-shadow: 0 2px 10px rgba(201,168,76,0.14), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* ============================================================
+   BUTTONS — pill glass, no backdrop-filter
+   Transitions restricted to GPU-composited properties only.
+   ============================================================ */
+.btn-primary-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #d4aa50 0%, #e0c070 50%, #c9a03e 100%);
+  border: 1px solid rgba(255,255,255,0.45);
+  color: var(--color-navy);
+  font-weight: 700;
+  padding: 0.62rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 3px 14px rgba(201,168,76,0.32), inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.btn-primary-custom:hover {
+  color: var(--color-navy);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(201,168,76,0.42), inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+.btn-primary-custom:focus-visible,
+.btn-outline-custom:focus-visible,
+.btn-outline-white:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.btn-outline-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.42);
+  color: var(--color-gold);
+  font-weight: 600;
+  padding: 0.58rem 1.45rem;
+  border-radius: 50px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  will-change: transform;
+}
+
+.btn-outline-custom:hover {
+  background: rgba(201,168,76,0.14);
+  color: var(--color-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(201,168,76,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: var(--color-white);
+  font-weight: 600;
+  padding: 0.58rem 1.45rem;
+  border-radius: 50px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  will-change: transform;
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.18);
+  color: var(--color-white);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   SKILL BADGES
+   ============================================================ */
+.skill-badge {
+  display: inline-block;
+  padding: 0.32rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(26,42,74,0.06);
+  border: 1px solid rgba(26,42,74,0.14);
+  color: var(--color-navy);
+  margin: 0.2rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  will-change: transform;
+}
+
+.skill-badge:hover {
+  background: rgba(26,42,74,0.86);
+  color: var(--color-white);
+  transform: translateY(-1px);
+}
+
+.skill-badge-gold {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.32);
+  color: var(--color-gold);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.skill-badge-gold:hover {
+  background: rgba(201,168,76,0.82);
+  color: var(--color-navy);
+}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline { position: relative; padding-left: 2rem; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.6rem; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-gold) 0%, rgba(201,168,76,0.15) 100%);
+  border-radius: 2px;
+}
+
+.timeline-item { position: relative; margin-bottom: 2rem; }
+
+.timeline-dot {
+  position: absolute;
+  left: -1.65rem; top: 0.3rem;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  border: 2px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.25), 0 0 12px rgba(201,168,76,0.4);
+}
+
+.timeline-date {
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.timeline-title { font-size: 0.95rem; font-weight: 700; color: var(--color-navy); margin-bottom: 0.15rem; }
+.timeline-org   { font-size: 0.85rem; color: var(--color-text-muted); }
+
+/* ============================================================
+   PUBLICATION CARD
+   ============================================================ */
+.publication-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.92) 0%, rgba(241,245,255,0.82) 100%);
+  border: 1px solid rgba(255,255,255,0.85);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--card-shadow), -2px 0 10px rgba(201,168,76,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.publication-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--card-shadow-hover), -2px 0 16px rgba(201,168,76,0.18);
+}
+
+.publication-journal {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   EVENT STATUS BADGES
+   ============================================================ */
+.event-status {
+  display: inline-block;
+  font-size: 0.73rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.event-status-ongoing   { background: rgba(40,167,69,0.12);   border: 1px solid rgba(40,167,69,0.22);  color: #1a7f37; }
+.event-status-completed { background: rgba(108,117,125,0.1);  border: 1px solid rgba(108,117,125,0.2); color: #495057; }
+.event-status-planned   { background: rgba(201,168,76,0.12);  border: 1px solid rgba(201,168,76,0.28); color: #8a6d1a; }
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+.cta-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 85% 50%, rgba(201,168,76,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 80% at 15% 50%, rgba(255,255,255,0.04) 0%, transparent 55%),
+    linear-gradient(145deg, var(--color-navy-deep) 0%, var(--color-navy) 50%, var(--color-navy-light) 100%);
+  padding: 80px 0;
+  color: var(--color-white);
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: rgba(201,168,76,0.1);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.cta-section h2 { color: var(--color-white); }
+.cta-section p  { color: rgba(255,255,255,0.75); }
+
+/* ============================================================
+   PROFILE PHOTO (About page)
+   ============================================================ */
+.profile-photo-wrap { display: flex; justify-content: center; }
+
+.profile-photo {
+  width: 260px; height: 260px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid rgba(201,168,76,0.5);
+  box-shadow:
+    0 0 0 8px  rgba(201,168,76,0.1),
+    0 0 0 16px rgba(201,168,76,0.05),
+    0 24px 60px rgba(26,42,74,0.2);
+}
+
+/* ============================================================
+   ACHIEVEMENT COUNTER
+   ============================================================ */
+.achievement-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-family: var(--font-heading);
+  display: block;
+  text-shadow: 0 2px 10px rgba(201,168,76,0.25);
+}
+
+.achievement-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  display: block;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer-dark {
+  background:
+    radial-gradient(ellipse 55% 50% at 85% 0%,   rgba(201,168,76,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 15% 100%, rgba(255,255,255,0.03) 0%, transparent 55%),
+    linear-gradient(180deg, var(--color-navy-light) 0%, var(--color-navy-deep) 100%);
+  color: rgba(255,255,255,0.72);
+  padding: 64px 0 28px;
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+
+.footer-dark h6 {
+  color: var(--color-gold);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 1rem;
+}
+
+.footer-dark a {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.88rem;
+  display: block;
+  margin-bottom: 0.4rem;
+  transition: color 0.15s;
+}
+
+.footer-dark a:hover { color: var(--color-gold); }
+
+.footer-brand   { color: var(--color-white); font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; }
+.footer-tagline { color: rgba(255,255,255,0.5); font-size: 0.84rem; margin-top: 0.25rem; }
+.footer-divider { border-color: rgba(255,255,255,0.08); margin: 2.5rem 0 1.25rem; }
+.footer-bottom  { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+
+/* Social links — no backdrop-filter */
+.social-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.62);
+  font-size: 1rem;
+  margin-right: 0.4rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+              color 0.18s ease, transform 0.18s ease;
+  will-change: transform;
+}
+
+.social-icon-link:hover {
+  background: rgba(201,168,76,0.15);
+  border-color: rgba(201,168,76,0.4);
+  color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+.form-control-custom {
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(26,42,74,0.12);
+  border-radius: var(--radius);
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  box-shadow: inset 0 2px 4px rgba(26,42,74,0.04), inset 0 -1px 0 rgba(255,255,255,0.9);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.form-control-custom:focus {
+  border-color: rgba(26,42,74,0.32);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.14), inset 0 2px 4px rgba(26,42,74,0.04);
+  outline: none;
+  background: #fff;
+}
+
+.contact-select {
+  width: 100%;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(26,42,74,0.12);
+  border-radius: var(--radius);
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  appearance: auto;
+}
+
+.contact-select:focus {
+  border-color: rgba(26,42,74,0.32);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.14);
+  outline: none;
+}
+
+/* ============================================================
+   PROJECT TECH TAGS
+   ============================================================ */
+.project-tech-tag {
+  display: inline-block;
+  font-size: 0.73rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(26,42,74,0.07);
+  border: 1px solid rgba(26,42,74,0.12);
+  color: var(--color-navy);
+  margin: 0.15rem;
+  font-weight: 500;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.project-status-badge {
+  font-size: 0.72rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.text-gold   { color: var(--color-gold) !important; }
+.text-navy   { color: var(--color-navy) !important; }
+.bg-navy     { background-color: var(--color-navy) !important; }
+.border-gold { border-color: var(--color-gold) !important; }
