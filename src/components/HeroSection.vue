@@ -35,9 +35,16 @@
         <!-- Photo -->
         <div class="col-md-5 order-1 order-md-2 hero-photo-wrap">
           <img
-            src="../assets/images/profile-placeholder.svg"
+            :src="heroPhoto700"
+            :srcset="`${heroPhoto420} 420w, ${heroPhoto700} 700w`"
+            sizes="(max-width: 768px) 75vw, 320px"
             alt="Portrait of Bright Osei Amankwatia"
             class="hero-photo"
+            width="700"
+            height="698"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
           />
         </div>
       </div>
@@ -48,4 +55,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { profile } from '../data/profile.js'
+import heroPhoto700 from '../assets/images/profile-hero-700.jpg'
+import heroPhoto420 from '../assets/images/profile-hero-420.jpg'
 </script>
