@@ -41,7 +41,7 @@
             alt="Portrait of Bright Osei Amankwatia"
             class="hero-photo"
             width="700"
-            height="698"
+            height="700"
             loading="eager"
             decoding="async"
             fetchpriority="high"

@@ -211,31 +211,51 @@ a:hover { color: var(--color-gold); }
   align-items: center;
   position: relative;
   z-index: 1;
+  padding: 18px;
 }
 
-/* Static pseudo-element – no filter, no animation, no layout cost */
+/* Rotated gold accent frame that peeks behind the photo */
 .hero-photo-wrap::before {
   content: '';
   position: absolute;
-  inset: -16px;
-  border-radius: calc(var(--radius-lg) + 10px);
-  background: rgba(201, 168, 76, 0.07);
-  border: 1px solid rgba(201, 168, 76, 0.22);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 24px 64px rgba(0,0,0,0.22);
+  inset: 18px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.04) 100%);
+  border: 1.5px solid rgba(201, 168, 76, 0.38);
+  transform: rotate(-4deg);
   pointer-events: none;
+  z-index: 0;
+}
+
+/* Outer glow ring */
+.hero-photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius-lg) + 14px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 24px 64px rgba(0,0,0,0.35),
+    0 0 48px rgba(201,168,76,0.12);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-photo {
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 4/5;
+  max-width: 340px;
+  height: auto;
+  max-height: 340px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  object-position: center top;
   border-radius: var(--radius-lg);
-  border: 2px solid rgba(201, 168, 76, 0.5);
+  border: 2.5px solid rgba(201, 168, 76, 0.65);
   box-shadow:
-    0 0 0 6px rgba(201, 168, 76, 0.1),
-    0 32px 80px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 0 0 5px rgba(201, 168, 76, 0.12),
+    0 0 0 6px rgba(255, 255, 255, 0.04),
+    0 28px 72px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
   position: relative;
   z-index: 1;
 }
