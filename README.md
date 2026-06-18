@@ -75,15 +75,12 @@ The site deploys automatically via `.github/workflows/deploy.yml` on every push 
 4. Push to `main` — the workflow will build and deploy automatically.
 
 ### Base URL configuration
-Open `vite.config.js` and set `base`:
+The deploy workflow now sets `VITE_BASE_PATH` automatically:
 
-```js
-// Deploying to https://USERNAME.github.io/REPOSITORY_NAME/
-base: '/REPOSITORY_NAME/'
+- For project sites (`https://USERNAME.github.io/REPOSITORY_NAME/`): `VITE_BASE_PATH=/<repo>/`
+- For user/org sites (`https://USERNAME.github.io/`): `VITE_BASE_PATH=/`
 
-// Deploying to https://USERNAME.github.io/ or a custom domain
-base: '/'
-```
+`vite.config.js` already reads this variable and falls back to `/` for local development.
 
 The router uses **hash history** (`/#/route`), so no server-side redirect configuration is required.
 
