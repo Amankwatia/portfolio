@@ -55,6 +55,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { profile } from '../data/profile.js'
-import heroPhoto700 from '../assets/images/profile-hero-700.jpg'
-import heroPhoto420 from '../assets/images/profile-hero-420.jpg'
+import heroPhoto700 from '../assets/images/profile-hero-700.png'
+import heroPhoto420 from '../assets/images/profile-hero-420.png'
 </script>
