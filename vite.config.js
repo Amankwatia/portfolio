@@ -10,6 +10,7 @@ import vue from '@vitejs/plugin-vue'
 // The router uses hash history, so no server-side redirect config is needed.
 export default defineConfig({
   plugins: [vue()],
-  base: '/portfolio/',
+  // Use root by default; override with VITE_BASE_PATH when deploying under a subpath.
+  base: process.env.VITE_BASE_PATH || '/',
 })
 
