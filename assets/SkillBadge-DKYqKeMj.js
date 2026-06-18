@@ -1,0 +1,1 @@
+import{C as e,S as t,h as n,u as r}from"./index-CoLupp93.js";var i={__name:`SkillBadge`,props:{label:{type:String,required:!0},variant:{type:String,default:`default`}},setup(i){return(a,o)=>(n(),r(`span`,{class:t([`skill-badge`,i.variant===`gold`?`skill-badge-gold`:``])},e(i.label),3))}};export{i as t};
